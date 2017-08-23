@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <bean id="mySpringFactory" class = "com.sky.strategy.MySpringFactory">
+        <property name="servcieMap">
+            <map>
+                <entry key="pcAct" value-ref="pcAct"/>
+                <entry key="mAct" value-ref="mAct"/>
+                <entry key="pcShop" value-ref="pcShop"/>
+                <entry key="mShop" value-ref="mShop"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="pcAct" class="com.sky.strategy.service.impl.PcActServiceImpl">
+        <constructor-arg name="renderBehavior" ref="pcRender"/>
+        <constructor-arg name="cacheBehavior" ref="cacheRedis"/>
+    </bean>
+
+    <bean id="mAct" class="com.sky.strategy.service.impl.MActServiceImpl">
+        <constructor-arg name="renderBehavior" ref="mRender"/>
+        <constructor-arg name="cacheBehavior" ref="cacheRedis"/>
+    </bean>
+
+    <bean id="pcShop" class="com.sky.strategy.service.impl.PcShopServiceImpl">
+        <constructor-arg name="renderBehavior" ref="pcRender"/>
+        <constructor-arg name="cacheBehavior" ref="cacheDisk"/>
+    </bean>
+
+    <bean id="mShop" class="com.sky.strategy.service.impl.MShopServiceImpl">
+        <constructor-arg name="renderBehavior" ref="mRender"/>
+        <constructor-arg name="cacheBehavior" ref="cacheDisk"/>
+    </bean>
+
+    <bean id="pcRender" class="com.sky.strategy.behavior.impl.PcRenderImpl"/>
+    <bean id="mRender" class="com.sky.strategy.behavior.impl.MRenderImpl"/>
+
+    <bean id="cacheDisk" class="com.sky.strategy.behavior.impl.CacheDiskImpl"/>
+    <bean id="cacheNo" class="com.sky.strategy.behavior.impl.CacheNoImpl"/>
+    <bean id="cacheRedis" class="com.sky.strategy.behavior.impl.CacheRedisImpl"/>
+
+</beans>
